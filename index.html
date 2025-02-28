@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pixel Planet</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+  }
+  canvas {
+    display: block;
+  }
+</style>
+</head>
+<body>
+<canvas id="gameCanvas"></canvas>
+<script>
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const scale = 20;
+const rows = Math.ceil(canvas.height / scale);
+const cols = Math.ceil(canvas.width / scale);
+
+let grid = Array.from({ length: rows }, () => Array(cols).fill('#ffffff'));
+
+function drawGrid() {
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      ctx.fillStyle = grid[row][col];
+      ctx.fillRect(col * scale, row * scale, scale, scale);
+      ctx.strokeStyle = '#cccccc';
+      ctx.strokeRect(col * scale, row * scale, scale, scale);
+    }
+  }
+}
+
+let painting = false;
+let selectedColor = '#000000';
+
+canvas.addEventListener('mousedown', (e) => {
+  painting = true;
+  placePixel(e);
+});
+
+canvas.addEventListener('mousemove', (e) => {
+  if (painting) {
+    placePixel(e);
+  }
+});
+
+window.addEventListener('mouseup', () => {
+  painting = false;
+});
+
+function placePixel(e) {
+  const x = Math.floor(e.clientX / scale);
+  const y = Math.floor(e.clientY / scale);
+  if (x >= 0 && x < cols && y >= 0 && y < rows) {
+    grid[y][x] = selectedColor;
+    ctx.fillStyle = selectedColor;
+    ctx.fillRect(x * scale, y * scale, scale, scale);
+  }
+}
+
+window.addEventListener('resize', () => {
+  const newWidth = window.innerWidth;
+  const newHeight = window.innerHeight;
+  const newRows = Math.ceil(newHeight / scale);
+  const newCols = Math.ceil(newWidth / scale);
+
+  const tempGrid = Array.from({ length: newRows }, () => Array(newCols).fill('#ffffff'));
+  
+  for (let row = 0; row < Math.min(rows, newRows); row++) {
+    for (let col = 0; col < Math.min(cols, newCols); col++) {
+      tempGrid[row][col] = grid[row][col];
+    }
+  }
+
+  canvas.width = newWidth;
+  canvas.height = newHeight;
+  rows = newRows;
+  cols = newCols;
+  grid = tempGrid;
+  drawGrid();
+});
+
+drawGrid();
+
+// Simple color picker
+const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+const colorPicker = document.createElement('div');
+colorPicker.style.position = 'absolute';
+colorPicker.style.top = '10px';
+colorPicker.style.left = '10px';
+colorPicker.style.display = 'flex';
+
+colors.forEach(color => {
+  const colorButton = document.createElement('div');
+  colorButton.style.width = '30px';
+  colorButton.style.height = '30px';
+  colorButton.style.backgroundColor = color;
+  colorButton.style.border = '2px solid #000';
+  colorButton.style.cursor = 'pointer';
+  colorButton.addEventListener('click', () => {
+    selectedColor = color;
+  });
+  colorPicker.appendChild(colorButton);
+});
+
+document.body.appendChild(colorPicker);
+</script>
+</body>
+</html>
