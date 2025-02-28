@@ -1,119 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pixel Planet</title>
-<style>
-  body {
-    margin: 0;
-    overflow: hidden;
-  }
-  canvas {
-    display: block;
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Тест на профориентацию</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .question {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    #result {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
-<canvas id="gameCanvas"></canvas>
-<script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
+  <div class="container">
+    <h1>Тест на профориентацию</h1>
+    <form id="career-test">
+      <div class="question">
+        <p>1. Какой тип деятельности вам больше нравится?</p>
+        <label><input type="radio" name="q1" value="a"> Работа с людьми</label>
+        <label><input type="radio" name="q1" value="b"> Работа с техникой</label>
+        <label><input type="radio" name="q1" value="c"> Творческая работа</label>
+      </div>
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+      <div class="question">
+        <p>2. Что вы предпочитаете делать в свободное время?</p>
+        <label><input type="radio" name="q2" value="a"> Читать книги или изучать что-то новое</label>
+        <label><input type="radio" name="q2" value="b"> Играть в компьютерные игры или собирать модели</label>
+        <label><input type="radio" name="q2" value="c"> Рисовать, писать или заниматься музыкой</label>
+      </div>
 
-const scale = 20;
-const rows = Math.ceil(canvas.height / scale);
-const cols = Math.ceil(canvas.width / scale);
+      <div class="question">
+        <p>3. Какие качества вы считаете своими сильными сторонами?</p>
+        <label><input type="radio" name="q3" value="a"> Коммуникабельность и эмпатия</label>
+        <label><input type="radio" name="q3" value="b"> Логика и аналитическое мышление</label>
+        <label><input type="radio" name="q3" value="c"> Креативность и воображение</label>
+      </div>
 
-let grid = Array.from({ length: rows }, () => Array(cols).fill('#ffffff'));
+      <button type="button" onclick="calculateResult()">Получить результат</button>
+    </form>
 
-function drawGrid() {
-  for (let row = 0; row < rows; row++) {
-    for (let col = 0; col < cols; col++) {
-      ctx.fillStyle = grid[row][col];
-      ctx.fillRect(col * scale, row * scale, scale, scale);
-      ctx.strokeStyle = '#cccccc';
-      ctx.strokeRect(col * scale, row * scale, scale, scale);
+    <div id="result" class="hidden">
+      <h2>Результат:</h2>
+      <p id="career-result"></p>
+    </div>
+  </div>
+
+  <script>
+    function calculateResult() {
+      // Получаем выбранные ответы
+      const q1 = document.querySelector('input[name="q1"]:checked')?.value || null;
+      const q2 = document.querySelector('input[name="q2"]:checked')?.value || null;
+      const q3 = document.querySelector('input[name="q3"]:checked')?.value || null;
+
+      // Проверяем, что все вопросы отвечены
+      if (!q1 || !q2 || !q3) {
+        alert("Пожалуйста, ответьте на все вопросы!");
+        return;
+      }
+
+      // Подсчитываем результаты
+      let scores = { a: 0, b: 0, c: 0 };
+      scores[q1]++;
+      scores[q2]++;
+      scores[q3]++;
+
+      // Определяем рекомендуемую профессию
+      let resultText = "";
+      if (scores.a > scores.b && scores.a > scores.c) {
+        resultText = "Вам подходит профессия, связанная с работой с людьми, например, психолог, учитель или HR-менеджер.";
+      } else if (scores.b > scores.a && scores.b > scores.c) {
+        resultText = "Вам подходит профессия, связанная с техникой и логикой, например, инженер, программист или аналитик.";
+      } else if (scores.c > scores.a && scores.c > scores.b) {
+        resultText = "Вам подходит творческая профессия, например, дизайнер, художник или писатель.";
+      } else {
+        resultText = "У вас равномерные предпочтения. Возможно, стоит рассмотреть смежные профессии.";
+      }
+
+      // Показываем результат
+      document.getElementById("career-result").textContent = resultText;
+      document.getElementById("result").classList.remove("hidden");
     }
-  }
-}
-
-let painting = false;
-let selectedColor = '#000000';
-
-canvas.addEventListener('mousedown', (e) => {
-  painting = true;
-  placePixel(e);
-});
-
-canvas.addEventListener('mousemove', (e) => {
-  if (painting) {
-    placePixel(e);
-  }
-});
-
-window.addEventListener('mouseup', () => {
-  painting = false;
-});
-
-function placePixel(e) {
-  const x = Math.floor(e.clientX / scale);
-  const y = Math.floor(e.clientY / scale);
-  if (x >= 0 && x < cols && y >= 0 && y < rows) {
-    grid[y][x] = selectedColor;
-    ctx.fillStyle = selectedColor;
-    ctx.fillRect(x * scale, y * scale, scale, scale);
-  }
-}
-
-window.addEventListener('resize', () => {
-  const newWidth = window.innerWidth;
-  const newHeight = window.innerHeight;
-  const newRows = Math.ceil(newHeight / scale);
-  const newCols = Math.ceil(newWidth / scale);
-
-  const tempGrid = Array.from({ length: newRows }, () => Array(newCols).fill('#ffffff'));
-  
-  for (let row = 0; row < Math.min(rows, newRows); row++) {
-    for (let col = 0; col < Math.min(cols, newCols); col++) {
-      tempGrid[row][col] = grid[row][col];
-    }
-  }
-
-  canvas.width = newWidth;
-  canvas.height = newHeight;
-  rows = newRows;
-  cols = newCols;
-  grid = tempGrid;
-  drawGrid();
-});
-
-drawGrid();
-
-// Simple color picker
-const colors = ['#000000', '#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
-const colorPicker = document.createElement('div');
-colorPicker.style.position = 'absolute';
-colorPicker.style.top = '10px';
-colorPicker.style.left = '10px';
-colorPicker.style.display = 'flex';
-
-colors.forEach(color => {
-  const colorButton = document.createElement('div');
-  colorButton.style.width = '30px';
-  colorButton.style.height = '30px';
-  colorButton.style.backgroundColor = color;
-  colorButton.style.border = '2px solid #000';
-  colorButton.style.cursor = 'pointer';
-  colorButton.addEventListener('click', () => {
-    selectedColor = color;
-  });
-  colorPicker.appendChild(colorButton);
-});
-
-document.body.appendChild(colorPicker);
-</script>
+  </script>
 </body>
 </html>
