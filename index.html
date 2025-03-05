@@ -1,141 +1,165 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Тест на профориентацию</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
-      color: #333;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .question {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      margin: 5px 0;
-    }
-
-    button {
-      display: block;
-      width: 100%;
-      padding: 10px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    #result {
-      margin-top: 20px;
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe with Bot</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+  }
+  h1 {
+    margin-top: 20px;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-gap: 5px;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  .cell {
+    width: 100px;
+    height: 100px;
+    background-color: #fff;
+    border: 2px solid #333;
+    font-size: 2em;
+    line-height: 100px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cell:hover {
+    background-color: #e0e0e0;
+  }
+  .message {
+    margin-top: 20px;
+    font-size: 1.2em;
+  }
+  button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Тест на профориентацию</h1>
-    <form id="career-test">
-      <div class="question">
-        <p>1. Какой тип деятельности вам больше нравится?</p>
-        <label><input type="radio" name="q1" value="a"> Работа с людьми</label>
-        <label><input type="radio" name="q1" value="b"> Работа с техникой</label>
-        <label><input type="radio" name="q1" value="c"> Творческая работа</label>
-      </div>
+<h1>Tic Tac Toe with Bot</h1>
+<div class="board" id="board">
+  <div class="cell" data-index="0"></div>
+  <div class="cell" data-index="1"></div>
+  <div class="cell" data-index="2"></div>
+  <div class="cell" data-index="3"></div>
+  <div class="cell" data-index="4"></div>
+  <div class="cell" data-index="5"></div>
+  <div class="cell" data-index="6"></div>
+  <div class="cell" data-index="7"></div>
+  <div class="cell" data-index="8"></div>
+</div>
+<div class="message" id="message"></div>
+<button onclick="resetGame()">Restart Game</button>
 
-      <div class="question">
-        <p>2. Что вы предпочитаете делать в свободное время?</p>
-        <label><input type="radio" name="q2" value="a"> Читать книги или изучать что-то новое</label>
-        <label><input type="radio" name="q2" value="b"> Играть в компьютерные игры или собирать модели</label>
-        <label><input type="radio" name="q2" value="c"> Рисовать, писать или заниматься музыкой</label>
-      </div>
+<script>
+  const board = document.getElementById('board');
+  const message = document.getElementById('message');
+  const cells = document.querySelectorAll('.cell');
+  let currentPlayer = 'X';
+  let gameState = ['', '', '', '', '', '', '', '', ''];
+  let gameActive = true;
 
-      <div class="question">
-        <p>3. Какие качества вы считаете своими сильными сторонами?</p>
-        <label><input type="radio" name="q3" value="a"> Коммуникабельность и эмпатия</label>
-        <label><input type="radio" name="q3" value="b"> Логика и аналитическое мышление</label>
-        <label><input type="radio" name="q3" value="c"> Креативность и воображение</label>
-      </div>
+  const winningConditions = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+  ];
 
-      <button type="button" onclick="calculateResult()">Получить результат</button>
-    </form>
+  function handleCellClick(event) {
+    const clickedCell = event.target;
+    const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
 
-    <div id="result" class="hidden">
-      <h2>Результат:</h2>
-      <p id="career-result"></p>
-    </div>
-  </div>
+    if (gameState[clickedCellIndex] !== '' || !gameActive) {
+      return;
+    }
 
-  <script>
-    function calculateResult() {
-      // Получаем выбранные ответы
-      const q1 = document.querySelector('input[name="q1"]:checked')?.value || null;
-      const q2 = document.querySelector('input[name="q2"]:checked')?.value || null;
-      const q3 = document.querySelector('input[name="q3"]:checked')?.value || null;
+    gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.textContent = currentPlayer;
 
-      // Проверяем, что все вопросы отвечены
-      if (!q1 || !q2 || !q3) {
-        alert("Пожалуйста, ответьте на все вопросы!");
+    if (checkWin()) {
+      message.textContent = `Player ${currentPlayer} wins!`;
+      gameActive = false;
+      return;
+    }
+
+    if (!gameState.includes('')) {
+      message.textContent = "It's a draw!";
+      gameActive = false;
+      return;
+    }
+
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    if (currentPlayer === 'O') {
+      setTimeout(botMove, 500);
+    }
+  }
+
+  function checkWin() {
+    return winningConditions.some(condition => {
+      return condition.every(index => {
+        return gameState[index] === currentPlayer;
+      });
+    });
+  }
+
+  function botMove() {
+    let availableMoves = [];
+    gameState.forEach((cell, index) => {
+      if (cell === '') {
+        availableMoves.push(index);
+      }
+    });
+
+    if (availableMoves.length > 0) {
+      const randomIndex = Math.floor(Math.random() * availableMoves.length);
+      const botChoice = availableMoves[randomIndex];
+      gameState[botChoice] = 'O';
+      cells[botChoice].textContent = 'O';
+
+      if (checkWin()) {
+        message.textContent = 'Bot wins!';
+        gameActive = false;
         return;
       }
 
-      // Подсчитываем результаты
-      let scores = { a: 0, b: 0, c: 0 };
-      scores[q1]++;
-      scores[q2]++;
-      scores[q3]++;
-
-      // Определяем рекомендуемую профессию
-      let resultText = "";
-      if (scores.a > scores.b && scores.a > scores.c) {
-        resultText = "Вам подходит профессия, связанная с работой с людьми, например, психолог, учитель или HR-менеджер.";
-      } else if (scores.b > scores.a && scores.b > scores.c) {
-        resultText = "Вам подходит профессия, связанная с техникой и логикой, например, инженер, программист или аналитик.";
-      } else if (scores.c > scores.a && scores.c > scores.b) {
-        resultText = "Вам подходит творческая профессия, например, дизайнер, художник или писатель.";
-      } else {
-        resultText = "У вас равномерные предпочтения. Возможно, стоит рассмотреть смежные профессии.";
+      if (!gameState.includes('')) {
+        message.textContent = "It's a draw!";
+        gameActive = false;
+        return;
       }
 
-      // Показываем результат
-      document.getElementById("career-result").textContent = resultText;
-      document.getElementById("result").classList.remove("hidden");
+      currentPlayer = 'X';
     }
-  </script>
+  }
+
+  function resetGame() {
+    gameState = ['', '', '', '', '', '', '', '', ''];
+    gameActive = true;
+    currentPlayer = 'X';
+    message.textContent = '';
+    cells.forEach(cell => {
+      cell.textContent = '';
+    });
+  }
+
+  board.addEventListener('click', handleCellClick);
+</script>
 </body>
 </html>
