@@ -21,12 +21,12 @@
   body.dark { background-color: #121212; color: #ffffff; }
   body.dark .cell { background-color: #1e1e1e; color: #ffffff; }
   body.dark .cell:hover { background-color: #333333; }
-  /* Mandalorian Theme */
-  body.mandalorian { background-color: #000000; color: #ffcc00; }
-  body.mandalorian .cell { background-color: #333333; color: #ffcc00; }
-  body.mandalorian .cell:hover { background-color: #4d4d4d; }
-  body.mandalorian .cell.x { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Mandalorian_Symbol.svg/1200px-Mandalorian_Symbol.svg.png'); background-size: cover; }
-  body.mandalorian .cell.o { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/7/7b/Galactic_Republic_Insignia.svg/1200px-Galactic_Republic_Insignia.svg.png'); background-size: cover; }
+  /* Minecraft Theme */
+  body.minecraft { background-color: #87CEEB; color: #000000; }
+  body.minecraft .cell { background-color: #D2B48C; color: #000000; border: 2px solid #8B4513; }
+  body.minecraft .cell:hover { background-color: #C3B091; }
+  body.minecraft .cell.x::before { content: "X"; font-size: 2em; font-weight: bold; color: #FF0000; }
+  body.minecraft .cell.o::before { content: "O"; font-size: 2em; font-weight: bold; color: #00FF00; }
 </style>
 </head>
 <body class="light">
@@ -168,7 +168,7 @@ function renderBoard() {
   document.querySelectorAll('.cell').forEach((cell, index) => {
     cell.textContent = '';
     cell.className = 'cell';
-    if (currentTheme === 'mandalorian') {
+    if (currentTheme === 'minecraft') {
       if (board[index] === 'X') cell.classList.add('x');
       if (board[index] === 'O') cell.classList.add('o');
     } else {
@@ -190,8 +190,8 @@ function toggleTheme() {
     document.body.className = 'dark';
     currentTheme = 'dark';
   } else if (currentTheme === 'dark') {
-    document.body.className = 'mandalorian';
-    currentTheme = 'mandalorian';
+    document.body.className = 'minecraft';
+    currentTheme = 'minecraft';
   } else {
     document.body.className = 'light';
     currentTheme = 'light';
