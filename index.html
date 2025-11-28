@@ -3,643 +3,698 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VibeTune Light</title>
+    <title>Animal - Удивительные способности животных</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
-            font-family: 'Arial', sans-serif;
-            background: #000;
-            color: #fff;
-            overflow: hidden;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            transition: background 1s ease;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #333;
+            line-height: 1.6;
+            padding: 0;
+            min-height: 100vh;
         }
-
+        
         .container {
-            text-align: center;
-            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
-            background: rgba(0, 0, 0, 0.7);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-            margin: 20px;
-            max-width: 90%;
         }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #00F6FF, #FF00FF);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 10px rgba(0, 246, 255, 0.5);
-        }
-
-        .tagline {
-            font-size: 1rem;
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
             margin-bottom: 30px;
-            color: #aaa;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-
-        .controls {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 20px;
+        
+        h1 {
+            font-size: 3rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-
-        button, .file-input-label {
-            padding: 12px 24px;
-            font-size: 16px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: bold;
-            background: linear-gradient(90deg, #00F6FF, #0077FF);
-            color: #000;
-            box-shadow: 0 4px 15px rgba(0, 246, 255, 0.3);
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 800px;
+            margin: 0 auto;
         }
-
-        .file-input-label {
-            display: inline-block;
+        
+        .animals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
         }
-
-        #fileInput {
-            display: none;
+        
+        .animal-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        button:hover, .file-input-label:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(0, 246, 255, 0.5);
+        
+        .animal-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
         }
-
-        button:active, .file-input-label:active {
-            transform: translateY(1px);
-        }
-
-        .demo-btn {
-            background: linear-gradient(90deg, #FF00FF, #FF0077);
-            box-shadow: 0 4px 15px rgba(255, 0, 255, 0.3);
-        }
-
-        .demo-btn:hover {
-            box-shadow: 0 6px 20px rgba(255, 0, 255, 0.5);
-        }
-
-        .vibe-btn {
-            background: linear-gradient(90deg, #00FF77, #00F6FF);
-            box-shadow: 0 4px 15px rgba(0, 255, 119, 0.3);
-        }
-
-        .vibe-btn:hover {
-            box-shadow: 0 6px 20px rgba(0, 255, 119, 0.5);
-        }
-
-        .status {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #aaa;
-            min-height: 20px;
-        }
-
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
+        
+        .animal-image {
             width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .audio-controls {
-            margin-top: 20px;
+            height: 200px;
+            background-color: #f0f0f0;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
+            color: #888;
+            font-style: italic;
+            background-size: cover;
+            background-position: center;
         }
-
-        .volume-slider {
-            width: 150px;
-            -webkit-appearance: none;
-            height: 5px;
-            border-radius: 5px;
-            background: #333;
-            outline: none;
+        
+        .animal-content {
+            padding: 20px;
         }
-
-        .volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: #00F6FF;
-            cursor: pointer;
+        
+        .animal-name {
+            font-size: 1.4rem;
+            color: #1a2a6c;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #fdbb2d;
+            padding-bottom: 5px;
         }
-
-        .play-pause-btn {
-            background: linear-gradient(90deg, #FFAA00, #FF7700);
-            box-shadow: 0 4px 15px rgba(255, 170, 0, 0.3);
+        
+        .animal-latin {
+            font-style: italic;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
         }
-
-        .play-pause-btn:hover {
-            box-shadow: 0 6px 20px rgba(255, 170, 0, 0.5);
+        
+        .ability {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #b21f1f;
         }
-
-        .visualization-controls {
-            margin-top: 15px;
-            display: flex;
-            gap: 10px;
-            justify-content: center;
+        
+        .tactics {
+            color: #444;
+            font-size: 0.95rem;
         }
-
-        .vis-type-btn {
-            padding: 8px 15px;
-            font-size: 14px;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            margin-top: 30px;
+            color: #666;
         }
-
-        .vis-type-btn.active {
-            background: rgba(0, 246, 255, 0.3);
-            border-color: #00F6FF;
-        }
-
+        
         @media (max-width: 768px) {
+            .animals-grid {
+                grid-template-columns: 1fr;
+            }
+            
             h1 {
-                font-size: 2rem;
-            }
-            
-            .controls {
-                width: 100%;
-            }
-            
-            button, .file-input-label {
-                width: 100%;
+                font-size: 2.2rem;
             }
         }
     </style>
 </head>
 <body>
-    <canvas id="visualizer"></canvas>
-    
     <div class="container">
-        <h1>VibeTune Light</h1>
-        <p class="tagline">Чувствуйте музыку через визуализацию и вибрацию</p>
+        <header>
+            <h1>Animal</h1>
+            <p class="subtitle">Удивительные способности животных: от кавитационных взрывов до полной маскировки и сверхдолголетия. Откройте для себя невероятный мир природных суперспособностей.</p>
+        </header>
         
-        <div class="controls">
-            <label for="fileInput" class="file-input-label">
-                🎧 Загрузить музыку
-            </label>
-            <input type="file" id="fileInput" accept="audio/*">
+        <div class="animals-grid">
+            <!-- Животное 1 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Мантис-креветка</h2>
+                    <div class="animal-latin">Mantis shrimp</div>
+                    <div class="ability">Удар быстрее пули, кавитационный взрыв</div>
+                    <div class="tactics">Создаёт ударные волны в воде, способные оглушить или убить добычу. Её удар считается одним из самых быстрых движений в животном мире.</div>
+                </div>
+            </div>
             
-            <button id="demoBtn" class="demo-btn">🎵 Испытай демо</button>
-            <button id="vibeBtn" class="vibe-btn">💓 Слушать вибрацией</button>
+            <!-- Животное 2 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Бомбардирский жук</h2>
+                    <div class="animal-latin">Bombardier beetle</div>
+                    <div class="ability">Химический выстрел кипящим зарядом</div>
+                    <div class="tactics">Смешивает химические вещества в специальной камере, создавая взрывной кипящий выброс для защиты от хищников.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 3 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Электрический угорь</h2>
+                    <div class="animal-latin">Electrophorus electricus</div>
+                    <div class="ability">Генерация до 860 В</div>
+                    <div class="tactics">Использует специальные электроциты для создания мощных электрических разрядов, оглушая добычу и защищаясь от врагов.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 4 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1574878110614-36a3164dc8d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Базилиск-ящерица</h2>
+                    <div class="animal-latin">Basiliscus</div>
+                    <div class="ability">Бегает по воде</div>
+                    <div class="tactics">Использует быстрые удары задних лап для создания воздушных карманов, позволяющих ей бежать по поверхности воды.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 5 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326567-98ae2405596b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Осьминог-мимик</h2>
+                    <div class="animal-latin">Mimic octopus</div>
+                    <div class="ability">Полная маскировка под другие виды</div>
+                    <div class="tactics">Меняет форму, окраску и походку, чтобы имитировать других морских животных — рыб, морских змей, даже медуз. Маскировка + обман.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 6 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Вондерпус</h2>
+                    <div class="animal-latin">Wunderpus</div>
+                    <div class="ability">Графическая маскировка + интеллект</div>
+                    <div class="tactics">Обладает сложными узорами на коже и высоким интеллектом, позволяющим адаптировать поведение под ситуацию.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 7 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Стрекоза</h2>
+                    <div class="animal-latin">Odonata</div>
+                    <div class="ability">95% точности убийства в воздухе</div>
+                    <div class="tactics">Обладает сложной системой зрения и полёта, позволяющей перехватывать добычу с невероятной точностью.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 8 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Шишковидная рыба-ананас</h2>
+                    <div class="animal-latin">Cleidopus gloriamaris</div>
+                    <div class="ability">Собственный биосвет</div>
+                    <div class="tactics">Использует биолюминесценцию для привлечения добычи и общения в темноте глубоких вод.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 9 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1576675467077-c8b5cba309f4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Рыба-капля</h2>
+                    <div class="animal-latin">Psychrolutes marcidus</div>
+                    <div class="ability">Выживание при глубоководном давлении</div>
+                    <div class="tactics">Имеет желеобразное тело без плавательного пузыря, позволяющее выдерживать экстремальное давление на глубине.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 10 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Чёрная мамба</h2>
+                    <div class="animal-latin">Dendroaspis polylepis</div>
+                    <div class="ability">Скорость и нейротоксин</div>
+                    <div class="tactics">Одна из самых быстрых змей, сочетающая скорость с мощным нейротоксическим ядом, парализующим жертву.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 11 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1559253664-ca249d4608c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Ядовитая стрелка-лягушка</h2>
+                    <div class="animal-latin">Dendrobatidae</div>
+                    <div class="ability">Кожа токсичнее цианида</div>
+                    <div class="tactics">Использует яркую окраску как предупреждение о токсичности. Яд защищает от хищников.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 12 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Туатара</h2>
+                    <div class="animal-latin">Sphenodon punctatus</div>
+                    <div class="ability">Третий глаз (париетальный), сверхдолголетие</div>
+                    <div class="tactics">Имеет светочувствительный "третий глаз" на макушке и может жить более 100 лет, сохраняя репродуктивную способность.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 13 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Комодский дракон</h2>
+                    <div class="animal-latin">Varanus komodoensis</div>
+                    <div class="ability">Гемотоксичная слюна + тактика охоты</div>
+                    <div class="tactics">Использует ядовитую слюну, вызывающую сепсис, и тактику засад для охоты на крупную добычу.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 14 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Жук-носорог</h2>
+                    <div class="animal-latin">Oryctes nasicornis</div>
+                    <div class="ability">Поднимает вес в 850 раз больше себя</div>
+                    <div class="tactics">Обладает невероятной силой относительно размеров тела, используя её для перемещения препятствий и защиты территории.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 15 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Кротозуб</h2>
+                    <div class="animal-latin">Condylura cristata</div>
+                    <div class="ability">Самая быстрая реакция среди млекопитающих</div>
+                    <div class="tactics">Использует звездообразный нос с 22 мясистыми щупальцами для молниеносного обнаружения и поедания добычи.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 16 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1574878110614-36a3164dc8d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Листоносый геккон</h2>
+                    <div class="animal-latin">Uroplatus</div>
+                    <div class="ability">Абсолютная маскировка, исчезает на фоне</div>
+                    <div class="tactics">Имитирует текстуру и цвет коры деревьев, становясь практически невидимым для хищников и добычи.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 17 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326567-98ae2405596b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Голубой дракон</h2>
+                    <div class="animal-latin">Glaucus atlanticus</div>
+                    <div class="ability">Ворует яд у медуз и усиливает его</div>
+                    <div class="tactics">Поглощает стрекательные клетки медуз и накапливает их в своих отростках для защиты от хищников.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 18 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Муравей-космонавт</h2>
+                    <div class="animal-latin">Cataglyphis</div>
+                    <div class="ability">Ориентируется в аду пустынь по солнечным углам</div>
+                    <div class="tactics">Использует положение солнца для навигации в экстремально жарких условиях пустыни, где другие насекомые не выживают.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 19 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Лириохвост</h2>
+                    <div class="animal-latin">Menura</div>
+                    <div class="ability">Идеальная имитация любых звуков</div>
+                    <div class="tactics">Может точно воспроизводить звуки других птиц, животных и даже механические шумы для привлечения партнеров и защиты территории.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 20 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1559253664-ca249d4608c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Китайский гигантский саламандр</h2>
+                    <div class="animal-latin">Andrias davidianus</div>
+                    <div class="ability">Регенерация, ночной слух</div>
+                    <div class="tactics">Обладает способностью к регенерации конечностей и исключительным слухом, позволяющим охотиться в полной темноте.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 21 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Слонохвостая рыба-пилорыл</h2>
+                    <div class="animal-latin">Gnathonemus petersii</div>
+                    <div class="ability">Электролокация</div>
+                    <div class="tactics">Создает слабое электрическое поле для обнаружения объектов и навигации в мутной воде, где зрение бесполезно.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 22 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Термит-солдат</h2>
+                    <div class="animal-latin">Nasutitermes</div>
+                    <div class="ability">Биоклей, который мгновенно затвердевает</div>
+                    <div class="tactics">Выстреливает липким химическим веществом, которое мгновенно затвердевает, обездвиживая врагов колонии.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 23 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Пистолетная креветка</h2>
+                    <div class="animal-latin">Alpheidae</div>
+                    <div class="ability">Хлопок клешнёй создаёт температуру ~4000°C в пузыре</div>
+                    <div class="tactics">Создает кавитационный пузырь, который при схлопывании производит ударную волну и вспышку света, оглушая добычу.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 24 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Ротанг-змея</h2>
+                    <div class="animal-latin">Ahaetulla</div>
+                    <div class="ability">Сверхдлинное тело для воздушной акробатики</div>
+                    <div class="tactics">Использует удлиненное тонкое тело для балансирования и совершения точных прыжков между ветвями деревьев.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 25 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Морской огурец</h2>
+                    <div class="animal-latin">Holothuroidea</div>
+                    <div class="ability">Выворачивает внутренности как оружие</div>
+                    <div class="tactics">При угрозе выстреливает своими внутренними органами, которые отвлекают хищника, пока животное ускользает.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 26 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326567-98ae2405596b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Кальмар-вампир</h2>
+                    <div class="animal-latin">Vampyroteuthis infernalis</div>
+                    <div class="ability">Красные глаза + чёрные «клёны» для исчезновения</div>
+                    <div class="tactics">Использует биолюминесценцию и специальные мембраны для создания световых отвлекающих маневров в глубоководной темноте.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 27 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Летучая рыба-экзарх</h2>
+                    <div class="animal-latin">Exocoetidae</div>
+                    <div class="ability">Длительный планирующий полёт над водой</div>
+                    <div class="tactics">Использует увеличенные грудные плавники для парения над поверхностью воды, ускользая от морских хищников.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 28 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Африканский медоед</h2>
+                    <div class="animal-latin">Mellivora capensis</div>
+                    <div class="ability">Иммунитет к змеиному яду</div>
+                    <div class="tactics">Обладает естественным иммунитетом к ядам многих змей, что позволяет ему охотиться на них без риска для жизни.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 29 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Суперпрыгун — кенгуру-крыса</h2>
+                    <div class="animal-latin">Dipodomys</div>
+                    <div class="ability">Прыжок до 3 м, уклонение от змей</div>
+                    <div class="tactics">Совершает непредсказуемые прыжки для уклонения от хищников, особенно эффективно против змей.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 30 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Морской ангел</h2>
+                    <div class="animal-latin">Clione limacina</div>
+                    <div class="ability">Прозрачное тело, холодолюбивый сверхвыживальщик</div>
+                    <div class="tactics">Прозрачное тело делает его почти невидимым в холодных полярных водах, где он охотится на других моллюсков.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 31 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1576675466969-38eeae4b41f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Плащеносная акула</h2>
+                    <div class="animal-latin">Chlamydoselachus anguineus</div>
+                    <div class="ability">Челюсти как ловушка, выброс вперёд на треть головы</div>
+                    <div class="tactics">Может выдвигать челюсти вперед, чтобы схватить добычу, которая кажется слишком большой для её рта.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 32 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1574878110614-36a3164dc8d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Галапагосская морская игуана</h2>
+                    <div class="animal-latin">Amblyrhynchus cristatus</div>
+                    <div class="ability">Единственная морская ящерица, ныряет 30+ м</div>
+                    <div class="tactics">Может задерживать дыхание до 30 минут и нырять на значительную глубину для питания водорослями.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 33 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Ахатина гигантская</h2>
+                    <div class="animal-latin">Achatina fulica</div>
+                    <div class="ability">Биоминерализация, восстанавливает раковину</div>
+                    <div class="tactics">Обладает способностью восстанавливать поврежденную раковину, секретируя минеральные вещества.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 34 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1559253664-ca249d4608c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Железная лягушка (титикака)</h2>
+                    <div class="animal-latin">Telmatobius culeus</div>
+                    <div class="ability">Складки кожи как кислородный «радиатор»</div>
+                    <div class="tactics">Использует складки кожи для увеличения площади поверхности и поглощения кислорода из холодной воды высокогорного озера.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 35 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Рыба-архер (лучница)</h2>
+                    <div class="animal-latin">Toxotes</div>
+                    <div class="ability">Сбивает насекомых водяной струёй с точностью снайпера</div>
+                    <div class="tactics">Выстреливает струей воды, чтобы сбить насекомых с надводных растений, демонстрируя невероятную точность.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 36 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Муравей-пуля</h2>
+                    <div class="animal-latin">Paraponera clavata</div>
+                    <div class="ability">Самый болезненный укус в мире</div>
+                    <div class="tactics">Обладает укусом, который считается самым болезненным среди насекомых, вызывающим интенсивную боль продолжительностью до 24 часов.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 37 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1574878110614-36a3164dc8d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Геккон-токай</h2>
+                    <div class="animal-latin">Gekko gecko</div>
+                    <div class="ability">Хватка на микроскопических волосках, держится на стекле под любым углом</div>
+                    <div class="tactics">Использует миллионы микроскопических волосков на лапах, создающих силы Ван-дер-Ваальса для адгезии к любым поверхностям.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 38 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1546182990-dffeafbe841d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Ильтисовая ласка</h2>
+                    <div class="animal-latin">Mustela putorius</div>
+                    <div class="ability">Ломает позвоночники жертве прыжком на шею</div>
+                    <div class="tactics">Использует точные прыжки для атаки шеи жертвы, ломая позвоночник быстрым укусом.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 39 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Морской дракон</h2>
+                    <div class="animal-latin">Phyllopteryx taeniolatus</div>
+                    <div class="ability">Идеальная маскировка под водоросли</div>
+                    <div class="tactics">Имеет листовидные отростки по всему телу, которые делают его практически неотличимым от плавающих водорослей.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 40 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1597848212624-e6d4bd7f0f53?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Птица-секретарь</h2>
+                    <div class="animal-latin">Sagittarius serpentarius</div>
+                    <div class="ability">Убивает змей сокрушительными ударами ног</div>
+                    <div class="tactics">Использует мощные удары ног с острыми когтями для нейтрализации ядовитых змей, демонстрируя точность и силу.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 41 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1544551763-46a013bb70d5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Сарган-рыба</h2>
+                    <div class="animal-latin">Belonidae</div>
+                    <div class="ability">Прыжки на скорости, пробивает кожу как копьё</div>
+                    <div class="tactics">Совершает высокоскоростные прыжки из воды, и её длинное заостренное тело может представлять опасность для людей в лодках.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 42 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1574878110614-36a3164dc8d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Листоносый хамелеон</h2>
+                    <div class="animal-latin">Brookesia micra</div>
+                    <div class="ability">Меняет цвет + панорамное зрение 360°</div>
+                    <div class="tactics">Обладает независимыми глазами, обеспечивающими круговой обзор, и способностью менять окраску для маскировки и коммуникации.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 43 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Морской скорпион</h2>
+                    <div class="animal-latin">Scorpaenidae</div>
+                    <div class="ability">Яд + иглы, способные пробить кожу через обувь</div>
+                    <div class="tactics">Имеет острые шипы с мощным нейротоксином, способные пронзить даже обувь, представляя серьезную опасность для человека.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 44 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Тихоходка</h2>
+                    <div class="animal-latin">Tardigrada</div>
+                    <div class="ability">Выживание в вакууме, радиации, кипятке и морозе</div>
+                    <div class="tactics">Входит в состояние криптобиоза, при котором метаболизм практически останавливается, позволяя пережить экстремальные условия.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 45 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Кивсяк-химик</h2>
+                    <div class="animal-latin">Polydesmida</div>
+                    <div class="ability">Выбрасывает бензохиноновый аэрозоль</div>
+                    <div class="tactics">Выделяет химические вещества с неприятным запахом и раздражающим действием для защиты от хищников.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 46 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Колтанг</h2>
+                    <div class="animal-latin">Odontodactylus scyllarus</div>
+                    <div class="ability">Нестандартные удары «молотком»</div>
+                    <div class="tactics">Использует специализированные клешни в форме молотка для нанесения сокрушительных ударов по панцирям моллюсков и крабов.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 47 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1559253664-ca249d4608c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Жаба-суринамская</h2>
+                    <div class="animal-latin">Pipa pipa</div>
+                    <div class="ability">Выводит детёнышей из собственного спинного панциря</div>
+                    <div class="tactics">Самка инкубирует яйца в специальных карманах на спине, из которых полностью сформированные молодые жабы появляются наружу.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 48 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Пещерный тайский скорпион</h2>
+                    <div class="animal-latin">Chaerilus</div>
+                    <div class="ability">Флуоресцентное свечение под УФ</div>
+                    <div class="tactics">Содержит флуоресцентные химические вещества в экзоскелете, которые светятся под ультрафиолетовым излучением.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 49 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1558326612-85d8c14e4e8a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Листовой морской слизень</h2>
+                    <div class="animal-latin">Elysia chlorotica</div>
+                    <div class="ability">«Фотосинтезирующее» животное, ворует хлоропласты</div>
+                    <div class="tactics">Поглощает хлоропласты из потребляемых водорослей и интегрирует их в свои клетки, получая энергию от фотосинтеза.</div>
+                </div>
+            </div>
+            
+            <!-- Животное 50 -->
+            <div class="animal-card">
+                <div class="animal-image" style="background-image: url('https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80');"></div>
+                <div class="animal-content">
+                    <h2 class="animal-name">Плоский червь-«бессмертный»</h2>
+                    <div class="animal-latin">Planaria</div>
+                    <div class="ability">Тотальная регенерация, фактически омоложение</div>
+                    <div class="tactics">Может полностью восстановиться из крошечного фрагмента тела, включая головной мозг, демонстрируя практически неограниченную регенеративную способность.</div>
+                </div>
+            </div>
         </div>
         
-        <div id="audioControls" class="audio-controls hidden">
-            <button id="playPauseBtn" class="play-pause-btn">⏸️ Пауза</button>
-            <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="70">
-        </div>
-        
-        <div class="visualization-controls">
-            <button id="barsBtn" class="vis-type-btn active">Бары</button>
-            <button id="waveBtn" class="vis-type-btn">Волна</button>
-            <button id="particlesBtn" class="vis-type-btn">Частицы</button>
-        </div>
-        
-        <div class="status" id="status"></div>
+        <footer>
+            <p>Animal - Удивительные способности животных | Все права защищены &copy; 2023</p>
+        </footer>
     </div>
-
-    <script>
-        // Элементы DOM
-        const canvas = document.getElementById('visualizer');
-        const ctx = canvas.getContext('2d');
-        const fileInput = document.getElementById('fileInput');
-        const demoBtn = document.getElementById('demoBtn');
-        const vibeBtn = document.getElementById('vibeBtn');
-        const statusEl = document.getElementById('status');
-        const audioControls = document.getElementById('audioControls');
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const volumeSlider = document.getElementById('volumeSlider');
-        const barsBtn = document.getElementById('barsBtn');
-        const waveBtn = document.getElementById('waveBtn');
-        const particlesBtn = document.getElementById('particlesBtn');
-        
-        // Аудио контекст и анализатор
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 2048;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
-        const timeDataArray = new Uint8Array(bufferLength);
-        
-        // Переменные состояния
-        let source, audio, isPlaying = false, isVibrating = false;
-        let vibrationInterval, currentColors = ['#00F6FF', '#FF00FF', '#00FF77'];
-        let visualizationType = 'bars'; // 'bars', 'wave', 'particles'
-        
-        // Частицы для визуализации
-        let particles = [];
-        
-        // Настройка canvas
-        function setupCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        
-        window.addEventListener('resize', setupCanvas);
-        setupCanvas();
-        
-        // Загрузка и обработка аудио
-        fileInput.onchange = async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-            
-            statusEl.textContent = 'Анализ музыки...';
-            const url = URL.createObjectURL(file);
-            await loadAndPlayAudio(url);
-            await analyzeWithGimeni(file);
-        };
-        
-        // Демо-трек
-        demoBtn.onclick = async () => {
-            statusEl.textContent = 'Загрузка демо-трека...';
-            // Используем демо-трек (можно заменить на реальный URL)
-            const demoUrl = 'https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3';
-            await loadAndPlayAudio(demoUrl);
-            
-            // Для демо используем заглушку API
-            simulateGimeniResponse();
-        };
-        
-        // Загрузка и воспроизведение аудио
-        async function loadAndPlayAudio(url) {
-            if (audio) {
-                audio.pause();
-                if (source) source.disconnect();
-            }
-            
-            audio = new Audio(url);
-            audio.volume = volumeSlider.value / 100;
-            
-            source = audioCtx.createMediaElementSource(audio);
-            source.connect(analyser);
-            analyser.connect(audioCtx.destination);
-            
-            // Показать элементы управления аудио
-            audioControls.classList.remove('hidden');
-            
-            // Обработчики событий аудио
-            audio.onplay = () => {
-                isPlaying = true;
-                playPauseBtn.textContent = '⏸️ Пауза';
-                statusEl.textContent = 'Воспроизведение...';
-            };
-            
-            audio.onpause = () => {
-                isPlaying = false;
-                playPauseBtn.textContent = '▶️ Воспроизвести';
-                statusEl.textContent = 'Пауза';
-            };
-            
-            audio.onended = () => {
-                isPlaying = false;
-                playPauseBtn.textContent = '▶️ Воспроизвести';
-                statusEl.textContent = 'Трек завершен';
-                stopVibration();
-            };
-            
-            // Начать воспроизведение
-            try {
-                await audio.play();
-                requestAnimationFrame(draw);
-            } catch (err) {
-                console.error('Ошибка воспроизведения:', err);
-                statusEl.textContent = 'Ошибка воспроизведения. Нажмите для начала.';
-            }
-        }
-        
-        // Анализ с Gimeni API (заглушка)
-        async function analyzeWithGimeni(file) {
-            // В реальном приложении здесь будет запрос к API
-            // const formData = new FormData();
-            // formData.append('audio', file);
-            // const res = await fetch('https://api.gimeni.ai/analyze', { method:'POST', body: formData });
-            // const result = await res.json();
-            // applyGimeniSettings(result);
-            
-            // Для демонстрации используем симуляцию
-            setTimeout(simulateGimeniResponse, 1500);
-        }
-        
-        // Симуляция ответа от Gimeni API
-        function simulateGimeniResponse() {
-            const emotions = ['радость', 'грусть', 'энергия', 'спокойствие', 'ностальгия'];
-            const emotion = emotions[Math.floor(Math.random() * emotions.length)];
-            
-            // Генерация цветовой палитры на основе эмоции
-            let colorPalette;
-            switch(emotion) {
-                case 'радость':
-                    colorPalette = ['#FFD700', '#FF6B6B', '#4ECDC4'];
-                    break;
-                case 'грусть':
-                    colorPalette = ['#6A5ACD', '#4682B4', '#87CEEB'];
-                    break;
-                case 'энергия':
-                    colorPalette = ['#FF4500', '#FFA500', '#FFFF00'];
-                    break;
-                case 'спокойствие':
-                    colorPalette = ['#228B22', '#32CD32', '#90EE90'];
-                    break;
-                case 'ностальгия':
-                    colorPalette = ['#8B4513', '#D2691E', '#F4A460'];
-                    break;
-                default:
-                    colorPalette = ['#00F6FF', '#FF00FF', '#00FF77'];
-            }
-            
-            // Случайный паттерн вибрации
-            const vibrationPattern = Array.from({length: 8}, () => Math.floor(Math.random() * 200) + 50);
-            
-            const result = {
-                emotion: emotion,
-                color_palette: colorPalette,
-                vibration_pattern: vibrationPattern
-            };
-            
-            applyGimeniSettings(result);
-            statusEl.textContent = `Эмоция: ${emotion}`;
-        }
-        
-        // Применение настроек от API
-        function applyGimeniSettings(settings) {
-            currentColors = settings.color_palette;
-            
-            // Применение градиента фона
-            document.body.style.background = `linear-gradient(135deg, ${currentColors[0]}20, ${currentColors[1]}20, ${currentColors[2]}20)`;
-            
-            // Инициализация частиц для визуализации
-            initParticles();
-        }
-        
-        // Инициализация частиц
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.min(200, Math.floor(canvas.width * canvas.height / 2000));
-            
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 3 + 1,
-                    speedX: (Math.random() - 0.5) * 2,
-                    speedY: (Math.random() - 0.5) * 2,
-                    color: currentColors[Math.floor(Math.random() * currentColors.length)]
-                });
-            }
-        }
-        
-        // Визуализация
-        function draw() {
-            if (!isPlaying) return;
-            
-            requestAnimationFrame(draw);
-            analyser.getByteFrequencyData(dataArray);
-            analyser.getByteTimeDomainData(timeDataArray);
-            
-            // Очистка canvas с эффектом размытия
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Выбор типа визуализации
-            switch(visualizationType) {
-                case 'bars':
-                    drawBars();
-                    break;
-                case 'wave':
-                    drawWave();
-                    break;
-                case 'particles':
-                    drawParticles();
-                    break;
-            }
-        }
-        
-        // Визуализация столбцами
-        function drawBars() {
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let x = 0;
-            
-            for (let i = 0; i < bufferLength; i++) {
-                const barHeight = dataArray[i] / 255 * canvas.height / 2;
-                const gradient = ctx.createLinearGradient(0, canvas.height - barHeight, 0, canvas.height);
-                gradient.addColorStop(0, currentColors[i % currentColors.length]);
-                gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(x, canvas.height - barHeight, barWidth, barHeight);
-                
-                x += barWidth + 1;
-            }
-        }
-        
-        // Визуализация волной
-        function drawWave() {
-            ctx.lineWidth = 2;
-            ctx.strokeStyle = currentColors[0];
-            ctx.beginPath();
-            
-            const sliceWidth = canvas.width / bufferLength;
-            let x = 0;
-            
-            for (let i = 0; i < bufferLength; i++) {
-                const v = timeDataArray[i] / 128.0;
-                const y = v * canvas.height / 2;
-                
-                if (i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-                
-                x += sliceWidth;
-            }
-            
-            ctx.stroke();
-        }
-        
-        // Визуализация частицами
-        function drawParticles() {
-            // Обновление и отрисовка частиц
-            for (let i = 0; i < particles.length; i++) {
-                const p = particles[i];
-                
-                // Движение частиц
-                p.x += p.speedX;
-                p.y += p.speedY;
-                
-                // Отскок от границ
-                if (p.x < 0 || p.x > canvas.width) p.speedX *= -1;
-                if (p.y < 0 || p.y > canvas.height) p.speedY *= -1;
-                
-                // Влияние звука на частицы
-                const frequencyIndex = Math.floor((p.x / canvas.width) * bufferLength);
-                const intensity = dataArray[frequencyIndex] / 255;
-                
-                p.y += (intensity - 0.5) * 5;
-                p.size = Math.max(1, intensity * 5);
-                
-                // Отрисовка частицы
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = p.color;
-                ctx.fill();
-                
-                // Соединение близких частиц
-                for (let j = i + 1; j < particles.length; j++) {
-                    const p2 = particles[j];
-                    const dx = p.x - p2.x;
-                    const dy = p.y - p2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.2 * (1 - distance/100)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-        
-        // Управление вибрацией
-        vibeBtn.onclick = () => {
-            if (!isPlaying) {
-                statusEl.textContent = 'Сначала запустите музыку';
-                return;
-            }
-            
-            if (isVibrating) {
-                stopVibration();
-            } else {
-                startVibration();
-            }
-        };
-        
-        function startVibration() {
-            if (!('vibrate' in navigator)) {
-                statusEl.textContent = 'Ваше устройство не поддерживает вибрацию';
-                return;
-            }
-            
-            isVibrating = true;
-            vibeBtn.textContent = '⏹️ Остановить вибрацию';
-            statusEl.textContent = 'Вибрация активна';
-            
-            // Простой паттерн вибрации в такт музыке
-            let beatCount = 0;
-            vibrationInterval = setInterval(() => {
-                analyser.getByteFrequencyData(dataArray);
-                
-                // Определяем наличие бита по низким частотам
-                let lowFreqSum = 0;
-                for (let i = 0; i < 10; i++) {
-                    lowFreqSum += dataArray[i];
-                }
-                const avgLowFreq = lowFreqSum / 10;
-                
-                // Вибрация при сильном бите
-                if (avgLowFreq > 150) {
-                    navigator.vibrate(100);
-                    beatCount++;
-                    
-                    // Изменение цвета каждые 4 бита
-                    if (beatCount % 4 === 0) {
-                        const temp = currentColors[0];
-                        currentColors[0] = currentColors[1];
-                        currentColors[1] = currentColors[2];
-                        currentColors[2] = temp;
-                    }
-                }
-            }, 100);
-        }
-        
-        function stopVibration() {
-            isVibrating = false;
-            vibeBtn.textContent = '💓 Слушать вибрацией';
-            statusEl.textContent = 'Вибрация остановлена';
-            
-            if (vibrationInterval) {
-                clearInterval(vibrationInterval);
-            }
-            
-            if ('vibrate' in navigator) {
-                navigator.vibrate(0);
-            }
-        }
-        
-        // Управление воспроизведением
-        playPauseBtn.onclick = () => {
-            if (!audio) return;
-            
-            if (isPlaying) {
-                audio.pause();
-            } else {
-                audio.play();
-            }
-        };
-        
-        // Регулировка громкости
-        volumeSlider.oninput = () => {
-            if (audio) {
-                audio.volume = volumeSlider.value / 100;
-            }
-        };
-        
-        // Переключение типа визуализации
-        function setVisualizationType(type) {
-            visualizationType = type;
-            
-            // Обновление активной кнопки
-            barsBtn.classList.remove('active');
-            waveBtn.classList.remove('active');
-            particlesBtn.classList.remove('active');
-            
-            if (type === 'bars') barsBtn.classList.add('active');
-            if (type === 'wave') waveBtn.classList.add('active');
-            if (type === 'particles') particlesBtn.classList.add('active');
-            
-            // Переинициализация частиц при выборе этого типа
-            if (type === 'particles') {
-                initParticles();
-            }
-        }
-        
-        barsBtn.onclick = () => setVisualizationType('bars');
-        waveBtn.onclick = () => setVisualizationType('wave');
-        particlesBtn.onclick = () => setVisualizationType('particles');
-        
-        // Остановка вибрации при закрытии страницы
-        window.addEventListener('beforeunload', stopVibration);
-    </script>
 </body>
 </html>
